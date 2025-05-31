@@ -74,14 +74,12 @@ void setup() {
     dht.begin();
     horizontalServo.attach(horizontalServoPin);
     verticalServo.attach(verticalServoPin);
-
     lcd.init();
     lcd.backlight();
-
     pinMode(RAIN_ANALOG, INPUT);
     pinMode(RAIN_DIGITAL, INPUT);
 
-    horizontalServo.write(horizontalAngle);
+horizontalServo.write(horizontalAngle);
     verticalServo.write(verticalAngle);
     delay(150);
 }
@@ -92,21 +90,17 @@ void loop() {
     int TR = analogRead(ldrTR);
     int BL = analogRead(ldrBL);
     int BR = analogRead(ldrBR);
-
     // Read Rain Sensor values
     int rainValueAnalog = analogRead(RAIN_ANALOG);
     int rainValueDigital = digitalRead(RAIN_DIGITAL);
-
     // Read Temperature and Humidity
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
-
     // Compute average LDR values
     int avgTop = (TL + TR) / 2;
     int avgBottom = (BL + BR) / 2;
     int avgLeft = (TL + BL) / 2;
     int avgRight = (TR + BR) / 2;
-
     // Vertical Movement
     if (abs(avgTop - avgBottom) > threshold) {
         if (avgTop < avgBottom) {
@@ -118,7 +112,6 @@ void loop() {
         }
         verticalServo.write(verticalAngle);
     }
-
     // Horizontal Movement
     if (abs(avgLeft - avgRight) > threshold) {
         if (avgLeft > avgRight) {
@@ -130,14 +123,12 @@ void loop() {
         }
         horizontalServo.write(horizontalAngle);
     }
-
     // Display on LCD
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Temp: ");
     lcd.print(temperature);
     lcd.print("C");
-
     lcd.setCursor(0, 1);
     if (rainValueAnalog < 500 || rainValueDigital == 0) {
         lcd.print("Rain Detected!");
@@ -146,7 +137,6 @@ void loop() {
         lcd.print(humidity);
         lcd.print("%");
     }
-
     delay(100); // Wait before next reading
 }
 
